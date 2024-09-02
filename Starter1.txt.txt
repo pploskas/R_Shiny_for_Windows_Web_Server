@@ -1,0 +1,14 @@
+Public Class Form1
+    Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        Dim line As String
+        Dim petros As Double
+        Dim fileReader As System.IO.StreamReader
+        fileReader = My.Computer.FileSystem.OpenTextFileReader("toexe.txt")
+        line = Trim(fileReader.ReadLine())
+        fileReader.Close()
+        petros = Shell(line)
+        End
+
+
+    End Sub
+End Class
