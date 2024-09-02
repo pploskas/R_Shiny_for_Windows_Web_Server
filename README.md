@@ -1,3 +1,4 @@
+contact pploskas@gmail.com for any question.
 Suppose we want to deploy an R Shiny app (let’s say testApp) on a Windows Web Server (i.e.  IIS, Apache -  that has for example IP 10.38.23.51) so as to be available to the users that can access the web server. 
 To do so, we will reserve a range of TCP ports of the web server, the length of which will define the number of the testApp instances that the web users can run simultaneously. 
 Let’s say that we reserve 10 TCP ports 50001 to 50010 (need to check that ports are not reserved for any other service) which implies that 10 users can access the testApp simultaneously. 
