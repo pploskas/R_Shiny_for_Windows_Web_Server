@@ -1,0 +1,38 @@
+Suppose we want to deploy an R Shiny app (let’s say testApp) on a Windows Web Server (i.e.  IIS, Apache -  that has for example IP 10.38.23.51) so as to be available to the users that can access the web server. 
+To do so, we will reserve a range of TCP ports of the web server, the length of which will define the number of the testApp instances that the web users can run simultaneously. 
+Let’s say that we reserve 10 TCP ports 50001 to 50010 (need to check that ports are not reserved for any other service) which implies that 10 users can access the testApp simultaneously. 
+We also need to have installed R on the server (e.g. at "C:\Program Files\R\R-4.1.2\bin\Rscript”).
+The idea is to create 10 instances of the testApp: 
+“C:\Users\pploskas\Documents\testApp\app1.R"
+“C:\Users\pploskas\Documents\testApp\app2.R"
+“C:\Users\pploskas\Documents\testApp\app3.R"
+………………………………………………………..
+………………………………………………………..
+………………………………………………………..
+“C:\Users\pploskas\Documents\testApp\app9.R"
+“C:\Users\pploskas\Documents\testApp\app10.R"
+each one of them associated to one of the reserved TCP ports. An “instance selector” php API / file will assign on user web request the first available app instance (if any) 
+and run it on the server redirecting the user to its web url that contains the corresponding port.
+We also need in the php to define the .libPaths() that matches the right R packages load and execution (e.g. .libPaths(c('C:/Users/pploskas/Documents/R/win-library/4.1')) )
+The php script also utilizes 2 exe files Starter1.exe & Starter2.exe (vb net and gnu c exe programs respectively) that allows for R launching and execution letting the php to continue without waiting the R session to terminate.
+The starting point of the web call trigger is testApp_intro.html which launches testApp_instance_selector.php while notifying the user that the whole process is running.
+Both testApp_intro.html & testApp_instance_selector.php have to be located in the web server www folder (e.g  D:\www\r_apis) at the same place with another series of 10 identical folder instances:
+D:\www\r_apis\Instance1
+D:\www\ r _apis\Instance2
+…………….
+D:\www\ r _apis\Instance10
+each one of them containing Starter1.exe, Starter1.runtimeconfig, Starter1.dll & Starter2.exe files. 
+The deployed app could be accessed by url 
+https:// 10.38.23.51 /r_apis/ testApp _intro.html
+The files that have been briefly described are given in the project folder:
+testApp.R: an elementary R shiny leaflet app instance to be given as example
+app1.R, app2.R, app3.R ….. app9.R & app10.R files that are the instances variations of the testApp.R: they differ each other only at 2 “instance points” where their index is defined.
+They also have extra code compared to the testApp.R at:
+•	core mechanism points (2 points)
+•	check idle points (4 points): those points enable the whole system release an instance, when idle for more than 5 minutes
+
+We also note, that once the structure of 10 folder instances has been deployed (D:\www\r_apis\Instance1, D:\www\r_apis\Instance2, D:\www\r_apis\Instance3 etc), it can be utilized for any other R app that we want to deploy on the web server 
+in a similar way, implying that the pool of the 10 reserved TCP ports will also be consumed by them.
+
+
+
